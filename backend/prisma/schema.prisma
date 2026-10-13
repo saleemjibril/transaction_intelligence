@@ -1,0 +1,173 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CASH
+  CREDIT
+  INVESTMENT
+  OTHER
+}
+
+enum Direction {
+  CREDIT
+  DEBIT
+}
+
+enum TransactionCategory {
+  REVENUE
+  PAYROLL
+  SOFTWARE
+  MARKETING
+  TRAVEL
+  UTILITIES
+  RENT
+  TAX
+  TRANSFERS
+  BANKING_FEES
+  OTHER
+}
+
+enum TransactionStatus {
+  PENDING_CATEGORIZATION
+  CATEGORIZED
+  REVIEW_REQUIRED
+  REVIEWED
+}
+
+enum FlagType {
+  LARGE_AMOUNT
+  NEAR_DUPLICATE
+  LOW_CONFIDENCE
+  UNEXPECTED_CATEGORY
+  FREQUENCY
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum FlagStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+model Organization {
+  id           String        @id @default(cuid())
+  name         String
+  slug         String        @unique
+  createdAt    DateTime      @default(now())
+  users        User[]
+  accounts     Account[]
+  transactions Transaction[]
+}
+
+model User {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  email          String       @unique
+  passwordHash   String
+  role           Role         @default(MEMBER)
+  createdAt      DateTime     @default(now())
+
+  @@index([organizationId])
+}
+
+model Account {
+  id             String        @id @default(cuid())
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  name           String
+  type           AccountType   @default(CHECKING)
+  currency       String        @default("NGN")
+  createdAt      DateTime      @default(now())
+  transactions   Transaction[]
+
+  @@unique([organizationId, name])
+}
+
+model Transaction {
+  id                     String              @id @default(cuid())
+  organizationId         String
+  organization           Organization        @relation(fields: [organizationId], references: [id])
+  accountId              String
+  account                Account             @relation(fields: [accountId], references: [id])
+  externalRef            String
+  amountMinor            BigInt
+  direction              Direction
+  currency               String              @default("NGN")
+  description            String
+  merchant               String?
+  date                   DateTime
+  category               TransactionCategory?
+  status                 TransactionStatus    @default(PENDING_CATEGORIZATION)
+  categorizationAttempts Int                 @default(0)
+  nextCategorizationAt   DateTime            @default(now())
+  categorizationError    String?
+  confidence             Float?
+  categorizedAt          DateTime?
+  createdAt              DateTime            @default(now())
+  flags                  TransactionFlag[]
+  classificationLogs     ClassificationLog[]
+
+  @@unique([organizationId, externalRef, accountId])
+  @@index([organizationId, date])
+  @@index([organizationId, category])
+  @@index([organizationId, status, nextCategorizationAt])
+}
+
+model TransactionFlag {
+  id            String      @id @default(cuid())
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  type          FlagType
+  severity      Severity    @default(MEDIUM)
+  explanation   String
+  status        FlagStatus  @default(OPEN)
+  createdAt     DateTime    @default(now())
+
+  @@index([transactionId])
+}
+
+model ClassificationLog {
+  id                String              @id @default(cuid())
+  transactionId     String
+  transaction       Transaction         @relation(fields: [transactionId], references: [id])
+  source            String
+  originalCategory  TransactionCategory?
+  correctedCategory TransactionCategory?
+  confidence        Float?
+  reason            String?
+  correctedBy       String?
+  correctedAt       DateTime?
+  createdAt         DateTime            @default(now())
+
+  @@index([transactionId])
+}
+
+model IdempotencyKey {
+  id             String   @id @default(cuid())
+  organizationId String
+  key            String
+  statusCode     Int
+  responseBody   Json
+  createdAt      DateTime @default(now())
+
+  @@unique([organizationId, key])
+}

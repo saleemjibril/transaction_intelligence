@@ -1,0 +1,19 @@
+# Optional: run PostgreSQL in Docker instead of a local install.
+#   docker compose up -d db
+# Then set DATABASE_URL="postgresql://sycamore:sycamore@127.0.0.1:5432/sycamore"
+# in backend/.env. If you already run a local Postgres on port 5432,
+# stop it or change the host port below.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sycamore
+      POSTGRES_PASSWORD: sycamore
+      POSTGRES_DB: sycamore
+    ports:
+      - "5432:5432"
+    volumes:
+      - sycamore_pgdata:/var/lib/postgresql/data
+
+volumes:
+  sycamore_pgdata:
