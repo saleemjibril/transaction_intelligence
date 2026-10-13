@@ -11,6 +11,7 @@ import { errorHandler } from "./lib/errors";
 import { accountRoutes } from "./modules/accounts/routes";
 import { authRoutes } from "./modules/auth/routes";
 import { categoryRoutes } from "./modules/categories/routes";
+import { transactionRoutes } from "./modules/transactions/routes";
 
 export interface AppOptions {
   db: Db;
@@ -36,6 +37,7 @@ export function buildApp({ db, jwtSecret, logger = true }: AppOptions) {
   app.register(authRoutes, { prefix: "/api/v1" });
   app.register(accountRoutes, { prefix: "/api/v1" });
   app.register(categoryRoutes, { prefix: "/api/v1" });
+  app.register(transactionRoutes, { prefix: "/api/v1" });
 
   return app;
 }
