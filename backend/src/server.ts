@@ -7,7 +7,10 @@ import { startWorker } from "./modules/categorization/worker";
 const db = createPrismaClient(config.DATABASE_URL);
 const app = buildApp({ db, jwtSecret: config.JWT_SECRET });
 const provider = createProvider();
-const worker = startWorker(db, provider, { pollMs: config.CATEGORIZATION_POLL_MS });
+const worker = startWorker(db, provider, {
+  pollMs: config.CATEGORIZATION_POLL_MS,
+  baseBackoffMs: config.CATEGORIZATION_BACKOFF_MS,
+});
 
 async function shutdown(signal: string) {
   app.log.info({ signal }, "shutting down");

@@ -1,6 +1,9 @@
 import cors from "@fastify/cors";
 import jwt from "@fastify/jwt";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
 import {
+  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   type ZodTypeProvider,
@@ -11,6 +14,7 @@ import { errorHandler } from "./lib/errors";
 import { accountRoutes } from "./modules/accounts/routes";
 import { authRoutes } from "./modules/auth/routes";
 import { categoryRoutes } from "./modules/categories/routes";
+import { dashboardRoutes } from "./modules/dashboard/routes";
 import { reviewRoutes } from "./modules/review/routes";
 import { transactionRoutes } from "./modules/transactions/routes";
 
@@ -33,6 +37,18 @@ export function buildApp({ db, jwtSecret, logger = true }: AppOptions) {
 
   app.setErrorHandler(errorHandler);
 
+  app.register(swagger, {
+    openapi: {
+      info: {
+        title: "Transaction Intelligence Platform API",
+        description: "Multi-tenant transaction import, categorisation and review",
+        version: "1.0.0",
+      },
+    },
+    transform: jsonSchemaTransform,
+  });
+  app.register(swaggerUi, { routePrefix: "/docs" });
+
   app.get("/health", async () => ({ status: "ok" }));
 
   app.register(authRoutes, { prefix: "/api/v1" });
@@ -40,6 +56,7 @@ export function buildApp({ db, jwtSecret, logger = true }: AppOptions) {
   app.register(categoryRoutes, { prefix: "/api/v1" });
   app.register(transactionRoutes, { prefix: "/api/v1" });
   app.register(reviewRoutes, { prefix: "/api/v1" });
+  app.register(dashboardRoutes, { prefix: "/api/v1" });
 
   return app;
 }

@@ -7,10 +7,14 @@ import { RulesProvider } from "./rules-provider";
 
 const MAX_ATTEMPTS = 5;
 const LEASE_MS = 5 * 60 * 1000;
-const BASE_BACKOFF_MS = 30_000;
 
-function backoffDate(attempts: number): Date {
-  const delay = Math.min(BASE_BACKOFF_MS * 2 ** (attempts - 1), 60 * 60 * 1000);
+// Production retry schedule: 30s, 60s, 120s, 240s. Configurable so the
+// dead-letter path can be demonstrated without waiting minutes (see
+// CATEGORIZATION_BACKOFF_MS).
+export const DEFAULT_BACKOFF_MS = 30_000;
+
+function backoffDate(attempts: number, baseBackoffMs: number): Date {
+  const delay = Math.min(baseBackoffMs * 2 ** (attempts - 1), 60 * 60 * 1000);
   return new Date(Date.now() + delay);
 }
 
@@ -45,7 +49,16 @@ export async function claimPending(db: Db, batchSize: number): Promise<Transacti
   });
 }
 
-export async function processOne(db: Db, provider: ClassificationProvider, transaction: Transaction): Promise<void> {
+export interface ProcessOptions {
+  baseBackoffMs?: number;
+}
+
+export async function processOne(
+  db: Db,
+  provider: ClassificationProvider,
+  transaction: Transaction,
+  options: ProcessOptions = {},
+): Promise<void> {
   const input = {
     description: transaction.description,
     merchant: transaction.merchant,
@@ -64,7 +77,7 @@ export async function processOne(db: Db, provider: ClassificationProvider, trans
     await commitSuccess(db, provider, transaction, result, detections);
   } catch (error) {
     if (error instanceof ProviderError) {
-      await commitFailure(db, transaction, error.message);
+      await commitFailure(db, transaction, error.message, options.baseBackoffMs ?? DEFAULT_BACKOFF_MS);
       return;
     }
     throw error;
@@ -114,7 +127,12 @@ async function commitSuccess(
   });
 }
 
-async function commitFailure(db: Db, transaction: Transaction, errorMessage: string): Promise<void> {
+async function commitFailure(
+  db: Db,
+  transaction: Transaction,
+  errorMessage: string,
+  baseBackoffMs: number,
+): Promise<void> {
   const attempts = transaction.categorizationAttempts + 1;
 
   if (attempts < MAX_ATTEMPTS) {
@@ -123,7 +141,7 @@ async function commitFailure(db: Db, transaction: Transaction, errorMessage: str
       data: {
         categorizationAttempts: attempts,
         categorizationError: errorMessage,
-        nextCategorizationAt: backoffDate(attempts),
+        nextCategorizationAt: backoffDate(attempts, baseBackoffMs),
       },
     });
     return;
@@ -174,11 +192,13 @@ async function commitFailure(db: Db, transaction: Transaction, errorMessage: str
 export interface WorkerOptions {
   batchSize?: number;
   pollMs?: number;
+  baseBackoffMs?: number;
 }
 
 export function startWorker(db: Db, provider: ClassificationProvider, options: WorkerOptions = {}) {
   const batchSize = options.batchSize ?? 50;
   const pollMs = options.pollMs ?? 5000;
+  const baseBackoffMs = options.baseBackoffMs ?? DEFAULT_BACKOFF_MS;
   let running = true;
 
   const loop = async () => {
@@ -187,7 +207,7 @@ export function startWorker(db: Db, provider: ClassificationProvider, options: W
       try {
         const claimed = await claimPending(db, batchSize);
         for (const transaction of claimed) {
-          await processOne(db, provider, transaction);
+          await processOne(db, provider, transaction, { baseBackoffMs });
         }
         processed = claimed.length;
       } catch (error) {

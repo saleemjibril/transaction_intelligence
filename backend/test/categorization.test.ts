@@ -158,6 +158,21 @@ describe("categorization worker", () => {
 });
 
 describe("provider outage handling", () => {
+  it("schedules the retry strictly in the future", async () => {
+    // Guards against timezone skew: if the database session is not UTC, the
+    // retry timestamp lands in the past and the backoff is silently ignored,
+    // so the worker hammers an unavailable provider instead of waiting.
+    const tx = await createPending({ description: "Monthly staff payroll" });
+    const failing = new MockProvider("fail");
+
+    await processOne(db, failing, tx, { baseBackoffMs: 60_000 });
+
+    const updated = await db.transaction.findUnique({ where: { id: tx.id } });
+    expect(updated?.categorizationAttempts).toBe(1);
+    expect(updated!.nextCategorizationAt.getTime()).toBeGreaterThan(Date.now());
+    expect(updated!.nextCategorizationAt.getTime()).toBeLessThanOrEqual(Date.now() + 60_000 + 5_000);
+  });
+
   it("keeps ingestion independent of the provider and drains the backlog on recovery", async () => {
     const tx = await createPending({ description: "Monthly staff payroll", merchant: "OutageVendor" });
     const failing = new MockProvider("fail");

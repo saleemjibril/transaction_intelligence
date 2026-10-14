@@ -71,7 +71,7 @@ model Organization {
   id           String        @id @default(cuid())
   name         String
   slug         String        @unique
-  createdAt    DateTime      @default(now())
+  createdAt    DateTime      @default(now()) @db.Timestamptz(3)
   users        User[]
   accounts     Account[]
   transactions Transaction[]
@@ -84,7 +84,7 @@ model User {
   email          String       @unique
   passwordHash   String
   role           Role         @default(MEMBER)
-  createdAt      DateTime     @default(now())
+  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
 
   @@index([organizationId])
 }
@@ -96,33 +96,33 @@ model Account {
   name           String
   type           AccountType   @default(CHECKING)
   currency       String        @default("NGN")
-  createdAt      DateTime      @default(now())
+  createdAt      DateTime      @default(now()) @db.Timestamptz(3)
   transactions   Transaction[]
 
   @@unique([organizationId, name])
 }
 
 model Transaction {
-  id                     String              @id @default(cuid())
+  id                     String               @id @default(cuid())
   organizationId         String
-  organization           Organization        @relation(fields: [organizationId], references: [id])
+  organization           Organization         @relation(fields: [organizationId], references: [id])
   accountId              String
-  account                Account             @relation(fields: [accountId], references: [id])
+  account                Account              @relation(fields: [accountId], references: [id])
   externalRef            String
   amountMinor            BigInt
   direction              Direction
-  currency               String              @default("NGN")
+  currency               String               @default("NGN")
   description            String
   merchant               String?
-  date                   DateTime
+  date                   DateTime             @db.Timestamptz(3)
   category               TransactionCategory?
   status                 TransactionStatus    @default(PENDING_CATEGORIZATION)
-  categorizationAttempts Int                 @default(0)
-  nextCategorizationAt   DateTime            @default(now())
+  categorizationAttempts Int                  @default(0)
+  nextCategorizationAt   DateTime             @default(now()) @db.Timestamptz(3)
   categorizationError    String?
   confidence             Float?
-  categorizedAt          DateTime?
-  createdAt              DateTime            @default(now())
+  categorizedAt          DateTime?            @db.Timestamptz(3)
+  createdAt              DateTime             @default(now()) @db.Timestamptz(3)
   flags                  TransactionFlag[]
   classificationLogs     ClassificationLog[]
 
@@ -140,22 +140,22 @@ model TransactionFlag {
   severity      Severity    @default(MEDIUM)
   explanation   String
   status        FlagStatus  @default(OPEN)
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime    @default(now()) @db.Timestamptz(3)
 
   @@index([transactionId])
 }
 
 model ClassificationLog {
-  id               String              @id @default(cuid())
+  id               String               @id @default(cuid())
   transactionId    String
-  transaction      Transaction         @relation(fields: [transactionId], references: [id])
+  transaction      Transaction          @relation(fields: [transactionId], references: [id])
   source           String
   category         TransactionCategory?
   previousCategory TransactionCategory?
   confidence       Float?
   reason           String?
   actorId          String?
-  createdAt        DateTime            @default(now())
+  createdAt        DateTime             @default(now()) @db.Timestamptz(3)
 
   @@index([transactionId])
 }
@@ -166,7 +166,7 @@ model IdempotencyKey {
   key            String
   statusCode     Int
   responseBody   Json
-  createdAt      DateTime @default(now())
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
 
   @@unique([organizationId, key])
 }

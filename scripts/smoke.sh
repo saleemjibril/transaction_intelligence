@@ -153,7 +153,11 @@ for c in psql /opt/homebrew/opt/postgresql@16/bin/psql; do
   if command -v "$c" >/dev/null 2>&1; then PSQL="$c"; break; fi
 done
 if [ -n "$PSQL" ]; then
-  "$PSQL" -d sycamore -q -c "DELETE FROM \"Transaction\" WHERE \"externalRef\" LIKE 'SMOKE-%';" >/dev/null 2>&1 \
+  "$PSQL" -d sycamore -q -v ON_ERROR_STOP=1 -c "
+    DELETE FROM \"TransactionFlag\" WHERE \"transactionId\" IN (SELECT id FROM \"Transaction\" WHERE \"externalRef\" LIKE 'SMOKE-%');
+    DELETE FROM \"ClassificationLog\" WHERE \"transactionId\" IN (SELECT id FROM \"Transaction\" WHERE \"externalRef\" LIKE 'SMOKE-%');
+    DELETE FROM \"Transaction\" WHERE \"externalRef\" LIKE 'SMOKE-%';
+  " >/dev/null 2>&1 \
     && echo && echo "Cleaned up smoke test rows."
 fi
 
