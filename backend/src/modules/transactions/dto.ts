@@ -1,4 +1,4 @@
-import type { Transaction } from "../../generated/prisma/client";
+import type { Prisma, Transaction } from "../../generated/prisma/client";
 import { minorUnitsToDecimalString } from "../../lib/money";
 
 /**
@@ -25,3 +25,31 @@ export function toTransactionDTO(tx: Transaction) {
 }
 
 export type TransactionDTO = ReturnType<typeof toTransactionDTO>;
+
+export type TransactionWithRelations = Prisma.TransactionGetPayload<{
+  include: { flags: true; classificationLogs: true };
+}>;
+
+export function toTransactionDetailDTO(tx: TransactionWithRelations) {
+  return {
+    ...toTransactionDTO(tx),
+    flags: tx.flags.map((f) => ({
+      id: f.id,
+      type: f.type,
+      severity: f.severity,
+      explanation: f.explanation,
+      status: f.status,
+      createdAt: f.createdAt.toISOString(),
+    })),
+    classificationLogs: tx.classificationLogs.map((l) => ({
+      id: l.id,
+      source: l.source,
+      category: l.category,
+      previousCategory: l.previousCategory,
+      confidence: l.confidence,
+      reason: l.reason,
+      actorId: l.actorId,
+      createdAt: l.createdAt.toISOString(),
+    })),
+  };
+}

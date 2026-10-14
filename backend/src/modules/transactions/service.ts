@@ -219,7 +219,10 @@ export async function listTransactions(db: Db, organizationId: string, query: Li
 }
 
 export async function getTransaction(db: Db, organizationId: string, id: string) {
-  const tx = await db.transaction.findFirst({ where: { id, organizationId } });
+  const tx = await db.transaction.findFirst({
+    where: { id, organizationId },
+    include: { flags: true, classificationLogs: true },
+  });
   if (!tx) {
     throw new AppError(404, "Transaction not found", "TRANSACTION_NOT_FOUND");
   }

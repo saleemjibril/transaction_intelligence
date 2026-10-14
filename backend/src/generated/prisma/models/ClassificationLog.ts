@@ -38,12 +38,11 @@ export type ClassificationLogMinAggregateOutputType = {
   id: string | null
   transactionId: string | null
   source: string | null
-  originalCategory: $Enums.TransactionCategory | null
-  correctedCategory: $Enums.TransactionCategory | null
+  category: $Enums.TransactionCategory | null
+  previousCategory: $Enums.TransactionCategory | null
   confidence: number | null
   reason: string | null
-  correctedBy: string | null
-  correctedAt: Date | null
+  actorId: string | null
   createdAt: Date | null
 }
 
@@ -51,12 +50,11 @@ export type ClassificationLogMaxAggregateOutputType = {
   id: string | null
   transactionId: string | null
   source: string | null
-  originalCategory: $Enums.TransactionCategory | null
-  correctedCategory: $Enums.TransactionCategory | null
+  category: $Enums.TransactionCategory | null
+  previousCategory: $Enums.TransactionCategory | null
   confidence: number | null
   reason: string | null
-  correctedBy: string | null
-  correctedAt: Date | null
+  actorId: string | null
   createdAt: Date | null
 }
 
@@ -64,12 +62,11 @@ export type ClassificationLogCountAggregateOutputType = {
   id: number
   transactionId: number
   source: number
-  originalCategory: number
-  correctedCategory: number
+  category: number
+  previousCategory: number
   confidence: number
   reason: number
-  correctedBy: number
-  correctedAt: number
+  actorId: number
   createdAt: number
   _all: number
 }
@@ -87,12 +84,11 @@ export type ClassificationLogMinAggregateInputType = {
   id?: true
   transactionId?: true
   source?: true
-  originalCategory?: true
-  correctedCategory?: true
+  category?: true
+  previousCategory?: true
   confidence?: true
   reason?: true
-  correctedBy?: true
-  correctedAt?: true
+  actorId?: true
   createdAt?: true
 }
 
@@ -100,12 +96,11 @@ export type ClassificationLogMaxAggregateInputType = {
   id?: true
   transactionId?: true
   source?: true
-  originalCategory?: true
-  correctedCategory?: true
+  category?: true
+  previousCategory?: true
   confidence?: true
   reason?: true
-  correctedBy?: true
-  correctedAt?: true
+  actorId?: true
   createdAt?: true
 }
 
@@ -113,12 +108,11 @@ export type ClassificationLogCountAggregateInputType = {
   id?: true
   transactionId?: true
   source?: true
-  originalCategory?: true
-  correctedCategory?: true
+  category?: true
+  previousCategory?: true
   confidence?: true
   reason?: true
-  correctedBy?: true
-  correctedAt?: true
+  actorId?: true
   createdAt?: true
   _all?: true
 }
@@ -213,12 +207,11 @@ export type ClassificationLogGroupByOutputType = {
   id: string
   transactionId: string
   source: string
-  originalCategory: $Enums.TransactionCategory | null
-  correctedCategory: $Enums.TransactionCategory | null
+  category: $Enums.TransactionCategory | null
+  previousCategory: $Enums.TransactionCategory | null
   confidence: number | null
   reason: string | null
-  correctedBy: string | null
-  correctedAt: Date | null
+  actorId: string | null
   createdAt: Date
   _count: ClassificationLogCountAggregateOutputType | null
   _avg: ClassificationLogAvgAggregateOutputType | null
@@ -249,12 +242,11 @@ export type ClassificationLogWhereInput = {
   id?: Prisma.StringFilter<"ClassificationLog"> | string
   transactionId?: Prisma.StringFilter<"ClassificationLog"> | string
   source?: Prisma.StringFilter<"ClassificationLog"> | string
-  originalCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
+  category?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
   confidence?: Prisma.FloatNullableFilter<"ClassificationLog"> | number | null
   reason?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
-  correctedBy?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
-  correctedAt?: Prisma.DateTimeNullableFilter<"ClassificationLog"> | Date | string | null
+  actorId?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ClassificationLog"> | Date | string
   transaction?: Prisma.XOR<Prisma.TransactionScalarRelationFilter, Prisma.TransactionWhereInput>
 }
@@ -263,12 +255,11 @@ export type ClassificationLogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   source?: Prisma.SortOrder
-  originalCategory?: Prisma.SortOrderInput | Prisma.SortOrder
-  correctedCategory?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousCategory?: Prisma.SortOrderInput | Prisma.SortOrder
   confidence?: Prisma.SortOrderInput | Prisma.SortOrder
   reason?: Prisma.SortOrderInput | Prisma.SortOrder
-  correctedBy?: Prisma.SortOrderInput | Prisma.SortOrder
-  correctedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  actorId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   transaction?: Prisma.TransactionOrderByWithRelationInput
 }
@@ -280,12 +271,11 @@ export type ClassificationLogWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ClassificationLogWhereInput | Prisma.ClassificationLogWhereInput[]
   transactionId?: Prisma.StringFilter<"ClassificationLog"> | string
   source?: Prisma.StringFilter<"ClassificationLog"> | string
-  originalCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
+  category?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
   confidence?: Prisma.FloatNullableFilter<"ClassificationLog"> | number | null
   reason?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
-  correctedBy?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
-  correctedAt?: Prisma.DateTimeNullableFilter<"ClassificationLog"> | Date | string | null
+  actorId?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ClassificationLog"> | Date | string
   transaction?: Prisma.XOR<Prisma.TransactionScalarRelationFilter, Prisma.TransactionWhereInput>
 }, "id">
@@ -294,12 +284,11 @@ export type ClassificationLogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   source?: Prisma.SortOrder
-  originalCategory?: Prisma.SortOrderInput | Prisma.SortOrder
-  correctedCategory?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousCategory?: Prisma.SortOrderInput | Prisma.SortOrder
   confidence?: Prisma.SortOrderInput | Prisma.SortOrder
   reason?: Prisma.SortOrderInput | Prisma.SortOrder
-  correctedBy?: Prisma.SortOrderInput | Prisma.SortOrder
-  correctedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  actorId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ClassificationLogCountOrderByAggregateInput
   _avg?: Prisma.ClassificationLogAvgOrderByAggregateInput
@@ -315,24 +304,22 @@ export type ClassificationLogScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ClassificationLog"> | string
   transactionId?: Prisma.StringWithAggregatesFilter<"ClassificationLog"> | string
   source?: Prisma.StringWithAggregatesFilter<"ClassificationLog"> | string
-  originalCategory?: Prisma.EnumTransactionCategoryNullableWithAggregatesFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.EnumTransactionCategoryNullableWithAggregatesFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
+  category?: Prisma.EnumTransactionCategoryNullableWithAggregatesFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.EnumTransactionCategoryNullableWithAggregatesFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
   confidence?: Prisma.FloatNullableWithAggregatesFilter<"ClassificationLog"> | number | null
   reason?: Prisma.StringNullableWithAggregatesFilter<"ClassificationLog"> | string | null
-  correctedBy?: Prisma.StringNullableWithAggregatesFilter<"ClassificationLog"> | string | null
-  correctedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ClassificationLog"> | Date | string | null
+  actorId?: Prisma.StringNullableWithAggregatesFilter<"ClassificationLog"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ClassificationLog"> | Date | string
 }
 
 export type ClassificationLogCreateInput = {
   id?: string
   source: string
-  originalCategory?: $Enums.TransactionCategory | null
-  correctedCategory?: $Enums.TransactionCategory | null
+  category?: $Enums.TransactionCategory | null
+  previousCategory?: $Enums.TransactionCategory | null
   confidence?: number | null
   reason?: string | null
-  correctedBy?: string | null
-  correctedAt?: Date | string | null
+  actorId?: string | null
   createdAt?: Date | string
   transaction: Prisma.TransactionCreateNestedOneWithoutClassificationLogsInput
 }
@@ -341,24 +328,22 @@ export type ClassificationLogUncheckedCreateInput = {
   id?: string
   transactionId: string
   source: string
-  originalCategory?: $Enums.TransactionCategory | null
-  correctedCategory?: $Enums.TransactionCategory | null
+  category?: $Enums.TransactionCategory | null
+  previousCategory?: $Enums.TransactionCategory | null
   confidence?: number | null
   reason?: string | null
-  correctedBy?: string | null
-  correctedAt?: Date | string | null
+  actorId?: string | null
   createdAt?: Date | string
 }
 
 export type ClassificationLogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
-  originalCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  category?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
   confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transaction?: Prisma.TransactionUpdateOneRequiredWithoutClassificationLogsNestedInput
 }
@@ -367,12 +352,11 @@ export type ClassificationLogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
-  originalCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  category?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
   confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -380,24 +364,22 @@ export type ClassificationLogCreateManyInput = {
   id?: string
   transactionId: string
   source: string
-  originalCategory?: $Enums.TransactionCategory | null
-  correctedCategory?: $Enums.TransactionCategory | null
+  category?: $Enums.TransactionCategory | null
+  previousCategory?: $Enums.TransactionCategory | null
   confidence?: number | null
   reason?: string | null
-  correctedBy?: string | null
-  correctedAt?: Date | string | null
+  actorId?: string | null
   createdAt?: Date | string
 }
 
 export type ClassificationLogUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
-  originalCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  category?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
   confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -405,12 +387,11 @@ export type ClassificationLogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   transactionId?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
-  originalCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  category?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
   confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -428,12 +409,11 @@ export type ClassificationLogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   source?: Prisma.SortOrder
-  originalCategory?: Prisma.SortOrder
-  correctedCategory?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  previousCategory?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   reason?: Prisma.SortOrder
-  correctedBy?: Prisma.SortOrder
-  correctedAt?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -445,12 +425,11 @@ export type ClassificationLogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   source?: Prisma.SortOrder
-  originalCategory?: Prisma.SortOrder
-  correctedCategory?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  previousCategory?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   reason?: Prisma.SortOrder
-  correctedBy?: Prisma.SortOrder
-  correctedAt?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -458,12 +437,11 @@ export type ClassificationLogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   transactionId?: Prisma.SortOrder
   source?: Prisma.SortOrder
-  originalCategory?: Prisma.SortOrder
-  correctedCategory?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  previousCategory?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
   reason?: Prisma.SortOrder
-  correctedBy?: Prisma.SortOrder
-  correctedAt?: Prisma.SortOrder
+  actorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -516,24 +494,22 @@ export type ClassificationLogUncheckedUpdateManyWithoutTransactionNestedInput = 
 export type ClassificationLogCreateWithoutTransactionInput = {
   id?: string
   source: string
-  originalCategory?: $Enums.TransactionCategory | null
-  correctedCategory?: $Enums.TransactionCategory | null
+  category?: $Enums.TransactionCategory | null
+  previousCategory?: $Enums.TransactionCategory | null
   confidence?: number | null
   reason?: string | null
-  correctedBy?: string | null
-  correctedAt?: Date | string | null
+  actorId?: string | null
   createdAt?: Date | string
 }
 
 export type ClassificationLogUncheckedCreateWithoutTransactionInput = {
   id?: string
   source: string
-  originalCategory?: $Enums.TransactionCategory | null
-  correctedCategory?: $Enums.TransactionCategory | null
+  category?: $Enums.TransactionCategory | null
+  previousCategory?: $Enums.TransactionCategory | null
   confidence?: number | null
   reason?: string | null
-  correctedBy?: string | null
-  correctedAt?: Date | string | null
+  actorId?: string | null
   createdAt?: Date | string
 }
 
@@ -570,60 +546,55 @@ export type ClassificationLogScalarWhereInput = {
   id?: Prisma.StringFilter<"ClassificationLog"> | string
   transactionId?: Prisma.StringFilter<"ClassificationLog"> | string
   source?: Prisma.StringFilter<"ClassificationLog"> | string
-  originalCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
+  category?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.EnumTransactionCategoryNullableFilter<"ClassificationLog"> | $Enums.TransactionCategory | null
   confidence?: Prisma.FloatNullableFilter<"ClassificationLog"> | number | null
   reason?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
-  correctedBy?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
-  correctedAt?: Prisma.DateTimeNullableFilter<"ClassificationLog"> | Date | string | null
+  actorId?: Prisma.StringNullableFilter<"ClassificationLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ClassificationLog"> | Date | string
 }
 
 export type ClassificationLogCreateManyTransactionInput = {
   id?: string
   source: string
-  originalCategory?: $Enums.TransactionCategory | null
-  correctedCategory?: $Enums.TransactionCategory | null
+  category?: $Enums.TransactionCategory | null
+  previousCategory?: $Enums.TransactionCategory | null
   confidence?: number | null
   reason?: string | null
-  correctedBy?: string | null
-  correctedAt?: Date | string | null
+  actorId?: string | null
   createdAt?: Date | string
 }
 
 export type ClassificationLogUpdateWithoutTransactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
-  originalCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  category?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
   confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassificationLogUncheckedUpdateWithoutTransactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
-  originalCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  category?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
   confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassificationLogUncheckedUpdateManyWithoutTransactionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
-  originalCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
-  correctedCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  category?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
+  previousCategory?: Prisma.NullableEnumTransactionCategoryFieldUpdateOperationsInput | $Enums.TransactionCategory | null
   confidence?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  correctedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  actorId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -633,12 +604,11 @@ export type ClassificationLogSelect<ExtArgs extends runtime.Types.Extensions.Int
   id?: boolean
   transactionId?: boolean
   source?: boolean
-  originalCategory?: boolean
-  correctedCategory?: boolean
+  category?: boolean
+  previousCategory?: boolean
   confidence?: boolean
   reason?: boolean
-  correctedBy?: boolean
-  correctedAt?: boolean
+  actorId?: boolean
   createdAt?: boolean
   transaction?: boolean | Prisma.TransactionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["classificationLog"]>
@@ -647,12 +617,11 @@ export type ClassificationLogSelectCreateManyAndReturn<ExtArgs extends runtime.T
   id?: boolean
   transactionId?: boolean
   source?: boolean
-  originalCategory?: boolean
-  correctedCategory?: boolean
+  category?: boolean
+  previousCategory?: boolean
   confidence?: boolean
   reason?: boolean
-  correctedBy?: boolean
-  correctedAt?: boolean
+  actorId?: boolean
   createdAt?: boolean
   transaction?: boolean | Prisma.TransactionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["classificationLog"]>
@@ -661,12 +630,11 @@ export type ClassificationLogSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   id?: boolean
   transactionId?: boolean
   source?: boolean
-  originalCategory?: boolean
-  correctedCategory?: boolean
+  category?: boolean
+  previousCategory?: boolean
   confidence?: boolean
   reason?: boolean
-  correctedBy?: boolean
-  correctedAt?: boolean
+  actorId?: boolean
   createdAt?: boolean
   transaction?: boolean | Prisma.TransactionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["classificationLog"]>
@@ -675,16 +643,15 @@ export type ClassificationLogSelectScalar = {
   id?: boolean
   transactionId?: boolean
   source?: boolean
-  originalCategory?: boolean
-  correctedCategory?: boolean
+  category?: boolean
+  previousCategory?: boolean
   confidence?: boolean
   reason?: boolean
-  correctedBy?: boolean
-  correctedAt?: boolean
+  actorId?: boolean
   createdAt?: boolean
 }
 
-export type ClassificationLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "transactionId" | "source" | "originalCategory" | "correctedCategory" | "confidence" | "reason" | "correctedBy" | "correctedAt" | "createdAt", ExtArgs["result"]["classificationLog"]>
+export type ClassificationLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "transactionId" | "source" | "category" | "previousCategory" | "confidence" | "reason" | "actorId" | "createdAt", ExtArgs["result"]["classificationLog"]>
 export type ClassificationLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transaction?: boolean | Prisma.TransactionDefaultArgs<ExtArgs>
 }
@@ -704,12 +671,11 @@ export type $ClassificationLogPayload<ExtArgs extends runtime.Types.Extensions.I
     id: string
     transactionId: string
     source: string
-    originalCategory: $Enums.TransactionCategory | null
-    correctedCategory: $Enums.TransactionCategory | null
+    category: $Enums.TransactionCategory | null
+    previousCategory: $Enums.TransactionCategory | null
     confidence: number | null
     reason: string | null
-    correctedBy: string | null
-    correctedAt: Date | null
+    actorId: string | null
     createdAt: Date
   }, ExtArgs["result"]["classificationLog"]>
   composites: {}
@@ -1138,12 +1104,11 @@ export interface ClassificationLogFieldRefs {
   readonly id: Prisma.FieldRef<"ClassificationLog", 'String'>
   readonly transactionId: Prisma.FieldRef<"ClassificationLog", 'String'>
   readonly source: Prisma.FieldRef<"ClassificationLog", 'String'>
-  readonly originalCategory: Prisma.FieldRef<"ClassificationLog", 'TransactionCategory'>
-  readonly correctedCategory: Prisma.FieldRef<"ClassificationLog", 'TransactionCategory'>
+  readonly category: Prisma.FieldRef<"ClassificationLog", 'TransactionCategory'>
+  readonly previousCategory: Prisma.FieldRef<"ClassificationLog", 'TransactionCategory'>
   readonly confidence: Prisma.FieldRef<"ClassificationLog", 'Float'>
   readonly reason: Prisma.FieldRef<"ClassificationLog", 'String'>
-  readonly correctedBy: Prisma.FieldRef<"ClassificationLog", 'String'>
-  readonly correctedAt: Prisma.FieldRef<"ClassificationLog", 'DateTime'>
+  readonly actorId: Prisma.FieldRef<"ClassificationLog", 'String'>
   readonly createdAt: Prisma.FieldRef<"ClassificationLog", 'DateTime'>
 }
     

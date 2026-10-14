@@ -1,12 +1,17 @@
 import { buildApp } from "./app";
 import { config } from "./config";
 import { createPrismaClient } from "./db";
+import { createProvider } from "./modules/categorization/factory";
+import { startWorker } from "./modules/categorization/worker";
 
 const db = createPrismaClient(config.DATABASE_URL);
 const app = buildApp({ db, jwtSecret: config.JWT_SECRET });
+const provider = createProvider();
+const worker = startWorker(db, provider, { pollMs: config.CATEGORIZATION_POLL_MS });
 
 async function shutdown(signal: string) {
   app.log.info({ signal }, "shutting down");
+  worker.stop();
   await app.close();
   await db.$disconnect();
   process.exit(0);

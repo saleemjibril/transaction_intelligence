@@ -1,7 +1,7 @@
 import type { FastifyPluginAsyncZod } from "@fastify/type-provider-zod";
 import { z } from "zod";
 import { requireAuth } from "../auth/types";
-import { toTransactionDTO } from "./dto";
+import { toTransactionDetailDTO, toTransactionDTO } from "./dto";
 import { batchImportSchema, listTransactionsQuerySchema, transactionInputSchema } from "./schemas";
 import { getTransaction, importBatch, importSingle, listTransactions } from "./service";
 
@@ -26,7 +26,7 @@ export const transactionRoutes: FastifyPluginAsyncZod = async (app) => {
     { schema: { params: z.object({ id: z.string() }) } },
     async (request) => {
       const tx = await getTransaction(app.db, request.user.organizationId, request.params.id);
-      return toTransactionDTO(tx);
+      return toTransactionDetailDTO(tx);
     },
   );
 

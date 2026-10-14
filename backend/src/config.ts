@@ -9,6 +9,8 @@ const envSchema = z.object({
   CLASSIFICATION_PROVIDER: z.enum(["rules", "mock", "deepseek"]).default("rules"),
   DEEPSEEK_API_KEY: z.string().default(""),
   DEEPSEEK_MODEL: z.string().default("deepseek-chat"),
+  MOCK_BEHAVIOR: z.enum(["ok", "fail", "rate-limit", "invalid"]).default("ok"),
+  CATEGORIZATION_POLL_MS: z.coerce.number().int().min(100).default(5000),
 });
 
 export const config = envSchema.parse(process.env);

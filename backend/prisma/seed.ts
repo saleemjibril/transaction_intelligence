@@ -31,7 +31,7 @@ interface SeedTxn {
   description: string;
   merchant?: string;
   daysAgo: number;
-  category: TransactionCategory;
+  category?: TransactionCategory; // absent means pending, awaiting categorisation
 }
 
 async function main() {
@@ -107,6 +107,11 @@ async function main() {
     { orgId: globex.id, account: "Zenith - Current", ref: "GLX-UTL-004", amount: "70000.00", direction: Direction.DEBIT, description: "Warehouse electricity", merchant: "Ikeja Electric", daysAgo: 6, category: TransactionCategory.UTILITIES },
     { orgId: globex.id, account: "Zenith - Current", ref: "GLX-TRF-009", amount: "1500000.00", direction: Direction.DEBIT, description: "Transfer to reserve account", merchant: "Zenith Bank", daysAgo: 4, category: TransactionCategory.TRANSFERS },
     { orgId: globex.id, account: "Zenith - Current", ref: "GLX-BNK-007", amount: "1800.00", direction: Direction.DEBIT, description: "Bank charges", merchant: "Zenith Bank", daysAgo: 2, category: TransactionCategory.BANKING_FEES },
+
+    // Pending: uncategorised on seed, picked up by the worker on startup.
+    { orgId: acme.id, account: "GTBank - Operations", ref: "ACME-PND-001", amount: "250000.00", direction: Direction.DEBIT, description: "GTBank transfer to savings", merchant: "GTBank", daysAgo: 1 },
+    { orgId: acme.id, account: "GTBank - Operations", ref: "ACME-PND-002", amount: "8000000.00", direction: Direction.CREDIT, description: "Large contract milestone payment", merchant: "Zaria Wholesalers", daysAgo: 0 },
+    { orgId: acme.id, account: "GTBank - Operations", ref: "ACME-PND-003", amount: "45000.00", direction: Direction.DEBIT, description: "Office cleaning service", merchant: "CleanCo", daysAgo: 2 },
   ];
 
   const data = txns.map((t) => {
@@ -125,10 +130,11 @@ async function main() {
       description: t.description,
       merchant: t.merchant,
       date,
-      category: t.category,
-      status: TransactionStatus.CATEGORIZED,
-      confidence: 0.96,
-      categorizedAt: date,
+      category: t.category ?? null,
+      status: t.category ? TransactionStatus.CATEGORIZED : TransactionStatus.PENDING_CATEGORIZATION,
+      confidence: t.category ? 0.96 : null,
+      categorizedAt: t.category ? date : null,
+      nextCategorizationAt: t.category ? date : new Date(),
     };
   });
 

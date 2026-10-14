@@ -151,12 +151,11 @@ export const ClassificationLogScalarFieldEnum = {
   id: 'id',
   transactionId: 'transactionId',
   source: 'source',
-  originalCategory: 'originalCategory',
-  correctedCategory: 'correctedCategory',
+  category: 'category',
+  previousCategory: 'previousCategory',
   confidence: 'confidence',
   reason: 'reason',
-  correctedBy: 'correctedBy',
-  correctedAt: 'correctedAt',
+  actorId: 'actorId',
   createdAt: 'createdAt'
 } as const
 
